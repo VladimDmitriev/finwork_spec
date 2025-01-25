@@ -1,0 +1,12 @@
+336:  336  sudo apt update
+337:  337  sudo dpkg -i ~/home/vladim01/Загрузки/mysql-apt-config_0.8.33-1_all.deb
+338:  338  sudo dpkg -i /home/vladim01/Загрузки/mysql-apt-config_0.8.33-1_all.deb
+340:  340  sudo apt update
+341:  341  sudo apt install mysql-server mysql-client
+342:  342  sudo systemctl stop mysql
+343:  343  sudo apt-get purge mysql-server mysql-client mysql-common mysql-server-core-* mysql-client-core-*
+344:  344  sudo apt-get autoremove
+345:  345  sudo apt-get autoclean
+346:  346  sudo rm -rf /etc/mysql /var/lib/mysql
+347:  347  sudo deluser mysql
+348:  348  sudo delgroup mysql
