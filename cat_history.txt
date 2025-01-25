@@ -1,0 +1,21 @@
+62:   62  cat .git/config
+64:   64  cat .git/config
+71:   71  cat >pets.txt
+72:   72  cat pets.txt
+73:   73  cat >pack_animals.txt
+74:   74  cat pack_animals.txt
+75:   75  cat pets.txt pack_animals.txt > friendsOfMan.txt
+76:   76  cat friendsOfMan.txt
+115:  115  cat .git/config
+122:  122  cat .git/config
+131:  131  cat ~/.ssh/id_ed25519.pub
+136:  136  cat ~/.ssh/known_hosts
+145:  145  cat ~/.ssh/config
+148:  148  cat ~/.ssh/config
+247:  247  cat README.md
+293:  293  cat friendsOfMan.txt > ./animals/friendsOfMan.txt && rm friendsOfMan.txt
+301:  301  cat ./animals/friendsOfMan.txt
+304:  304  history | grep cat
+305:  305  history | grep cat -n ./cat_history.txt
+306:  306  history | grep cat -n > ./cat_history.txt
+
