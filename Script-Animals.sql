@@ -133,3 +133,58 @@ INSERT INTO camels (name, birthday, commands, genus_id)
   ('Сифон', '2015-07-12', 'повернись', 2), 
   ('Борода', '2022-12-10', 'улыбнись', 2);
 
+# Удалив из таблицы верблюдов, т.к. верблюдов решили перевезти в другой
+# питомник на зимовку. Объединить таблицы лошади, и ослы в одну таблицу.
+
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM camels;
+
+SELECT Name, Birthday, Commands FROM horses
+UNION SELECT  Name, Birthday, Commands FROM donkeys;
+
+# Создать новую таблицу “молодые животные” в которую попадут все
+# животные старше 1 года, но младше 3 лет и в отдельном столбце с точностью
+# до месяца подсчитать возраст животных в новой таблице
+
+CREATE TEMPORARY TABLE animals AS 
+SELECT *, 'Лошади' as genus FROM horses
+UNION SELECT *, 'Ослы' AS genus FROM donkeys
+UNION SELECT *, 'Собаки' AS genus FROM dogs
+UNION SELECT *, 'Кошки' AS genus FROM cats
+UNION SELECT *, 'Хомяки' AS genus FROM hamsters;
+
+CREATE TABLE yang_animal AS
+SELECT name, birthday, commands, genus, TIMESTAMPDIFF(MONTH, birthday, CURDATE()) AS age_in_month
+FROM animals WHERE birthday BETWEEN ADDDATE(curdate(), INTERVAL -3 YEAR) AND ADDDATE(CURDATE(), INTERVAL -1 YEAR);
+ 
+SELECT * FROM yang_animal;
+
+# Объединить все таблицы в одну, при этом сохраняя поля, указывающие на прошлую
+# принадлежность к старым таблицам. В файл скрипта добавлены команды объединения таблиц.
+# После выполнения скрипта, получаем итоговую таблицу.
+
+SELECT h.name, h.birthday, h.commands, pa.genusName, ya.age_in_month 
+FROM horses h
+LEFT JOIN yang_animal ya ON ya.name = h.name
+LEFT JOIN pack_animals pa ON pa.genus_id = h.genus_id
+UNION 
+SELECT d2.name, d2.birthday, d2.commands, pa.genusName, ya.age_in_month 
+FROM donkeys d2 
+LEFT JOIN yang_animal ya ON ya.name = d2.name
+LEFT JOIN pack_animals pa ON pa.genus_id = d2.genus_id
+UNION
+SELECT c.name, c.birthday, c.commands, p.genusName, ya.age_in_month 
+FROM cats c 
+LEFT JOIN yang_animal ya ON ya.name = c.name
+LEFT JOIN pets p ON p.id = c.genus_id
+UNION
+SELECT d.name, d.birthday, d.commands, p2.genusName, ya.age_in_month 
+FROM dogs d 
+LEFT JOIN yang_animal ya ON ya.name = d.name
+LEFT JOIN pets p2 ON p2.id = d.genus_id
+UNION
+SELECT hm.name, hm.birthday, hm.commands, p3.genusName, ya.age_in_month 
+FROM hamsters hm
+LEFT JOIN yang_animal ya ON ya.Name = hm.Name
+LEFT JOIN pets p3 ON p3.id = hm.genus_id;
+
