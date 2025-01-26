@@ -1,3 +1,7 @@
+#Block diagram files
+*.drawio
+*.bkp
+
 # Compiled class file
 *.class
 
